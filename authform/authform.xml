@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+
+	<fieldset name="default"
+		addrulepath="plugins/user/regauth/rules"
+		label="COM_USERS_REGISTRATION_DEFAULT_LABEL"
+	>
+
+		<field name="authcode" type="text"
+			description="PLG_USERS_AUTHCODE"
+			filter="ALNUM"
+			label="PLG_USERS_AUTHCODE_LABEL"
+			message="PLG_USERS_AUTHCODE_MESSAGE"
+			required="true"
+			validate="regauthcode"
+			size="30"
+		/>
+
+	</fieldset>
+</form>

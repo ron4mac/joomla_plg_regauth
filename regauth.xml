@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6" type="plugin" group="user">
+	<name>plg_user_regauth</name>
+	<author>Ron Crans</author>
+	<creationDate>April 2012</creationDate>
+	<copyright>(C) 2012 Ron Crans. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>ron@rjconline.net</authorEmail>
+	<version>1.0</version>
+	<description>PLG_USER_REGAUTH_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="regauth">regauth.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+		<folder>authform</folder>
+		<folder>rules</folder>
+	</files>
+	<!-- <languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_user_regauth.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_user_regauth.sys.ini</language>
+	</languages> -->
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="authcode" type="text" size="20" default=""
+				label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
