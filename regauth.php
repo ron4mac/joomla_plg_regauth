@@ -1,32 +1,25 @@
 <?php
-/**
-* @version		$Id: regauth.php
-* @package		Registration Authorization
-* @copyright	Copyright (C) 2012 Ron Crans. All rights reserved.
-* @license		GNU/GPL
-* Registration Authorization is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
+/*
+* @package    Registration Authorization User Plugin
+* @copyright  (C) 2016 RJCreations. All rights reserved.
+* @license    GNU General Public License version 3 or later; see LICENSE.txt
 */
-
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 
 class plgUserRegAuth extends JPlugin
 {
 
-	function plgUserRegAuth(&$subject, $config) {
+	function plgUserRegAuth (&$subject, $config)
+	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
 	}
 
 	// here we insert an 'authorization' field into the registration form
-	function onContentPrepareForm($form, $data)
+	function onContentPrepareForm ($form, $data)
 	{
 
-		if (!($form instanceof JForm))
-		{
+		if (!($form instanceof JForm)) {
 			$this->_subject->setError('JERROR_NOT_A_FORM');
 			return false;
 		}
@@ -45,11 +38,11 @@ class plgUserRegAuth extends JPlugin
 	}
 
 	// here we check that the correct authorization value was entered
-	function onUserBeforeSave($user, $isnew, $new)
+	function onUserBeforeSave ($user, $isnew, $new)
 	{
 		$app = JFactory::getApplication();
 
-		if(!$isnew || $app->isAdmin()) return;
+		if (!$isnew || $app->isAdmin()) return true;
 
 		$authCode = $this->params->get('authcode','@oH*_,G');
 		$jform = JRequest::getVar('jform', array());
@@ -62,7 +55,7 @@ class plgUserRegAuth extends JPlugin
 	}
 
 	// here we set some user default settings
-	function onContentPrepareData($context, $data)
+	function onContentPrepareData ($context, $data)
 	{
 		if ($context == 'com_users.registration')
 			$data->params = array('timezone'=>'America/New_York');

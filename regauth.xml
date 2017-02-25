@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.6" type="plugin" group="user">
+<extension version="3.0" type="plugin" group="user">
 	<name>plg_user_regauth</name>
 	<author>Ron Crans</author>
 	<creationDate>April 2012</creationDate>
-	<copyright>(C) 2012 Ron Crans. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<copyright>(C) 2012-2017 RJCreations. All rights reserved.</copyright>
+	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<authorEmail>ron@rjconline.net</authorEmail>
-	<version>1.0</version>
+	<version>1.1</version>
 	<description>PLG_USER_REGAUTH_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="regauth">regauth.php</filename>
@@ -15,10 +15,6 @@
 		<folder>authform</folder>
 		<folder>rules</folder>
 	</files>
-	<!-- <languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_user_regauth.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_user_regauth.sys.ini</language>
-	</languages> -->
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
