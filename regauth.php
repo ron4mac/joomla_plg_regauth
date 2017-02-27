@@ -8,17 +8,27 @@ defined('_JEXEC') or die;
 
 class plgUserRegAuth extends JPlugin
 {
+	protected $autoloadLanguage = true;
+	protected $app;
+	protected $codes = array();
 
-	function plgUserRegAuth (&$subject, $config)
+	public function __construct (&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
+		if (!isset($this->app)) $this->app = JFactory::getApplication();
+		// get all auth code and group specifications
+		for ($i=1; $i<5; $i++) {
+			$code = trim($this->params->get('authcode'.$i, ''));
+			if ($code) {
+				$this->codes[$code] = $this->params->get('groups'.$i, null);
+			}
+		}
 	}
 
 	// here we insert an 'authorization' field into the registration form
-	function onContentPrepareForm ($form, $data)
+	public function onContentPrepareForm ($form, $data)
 	{
-
 		if (!($form instanceof JForm)) {
 			$this->_subject->setError('JERROR_NOT_A_FORM');
 			return false;
@@ -34,19 +44,20 @@ class plgUserRegAuth extends JPlugin
 		JForm::addFormPath(dirname(__FILE__).'/authform');
 		$form->loadFile('authform', false);
 
+	//	echo'<xmp>';var_dump($this->codes);debug_print_backtrace();echo'</xmp>';
+
 		return true;
 	}
 
 	// here we check that the correct authorization value was entered
-	function onUserBeforeSave ($user, $isnew, $new)
+	public function onUserBeforeSave ($user, $isnew, $new)
 	{
-		$app = JFactory::getApplication();
+		if (!$isnew || $this->app->isAdmin()) return true;
 
-		if (!$isnew || $app->isAdmin()) return true;
-
-		$authCode = $this->params->get('authcode','@oH*_,G');
-		$jform = JRequest::getVar('jform', array());
-		if ($jform['authcode'] !== $authCode) {
+	//	$authCode = $this->params->get('authcode','@oH*_,G');
+		$jform = $this->app->input->post->get('jform', array(), 'array');
+		$code = trim($jform['authcode']);
+		if (!array_key_exists($code, $this->codes)) {
 			throw new Exception(JText::_('INVALID_AUTHORIZATION_CODE'));
 			return false;
 		}
@@ -55,11 +66,23 @@ class plgUserRegAuth extends JPlugin
 	}
 
 	// here we set some user default settings
-	function onContentPrepareData ($context, $data)
+	public function onContentPrepareData ($context, $data)
 	{
-		if ($context == 'com_users.registration')
+		if ($context == 'com_users.registration') {
 			$data->params = array('timezone'=>'America/New_York');
+		}
 		return true;
+	}
+
+	public function onUserBeforeDataValidation ($form, &$data)
+	{
+		if ($form->getName() == 'com_users.registration' && !empty($data['authcode'])) {
+			$code = trim($data['authcode']);
+			if (array_key_exists($code, $this->codes)) {
+				if ($this->codes[$code]) $data['groups'] = $this->codes[$code];
+			}
+		//	file_put_contents('REGAUTH.LOG', print_r(array($form, $data), true), FILE_APPEND);
+		}
 	}
 
 }

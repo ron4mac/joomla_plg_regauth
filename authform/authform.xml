@@ -10,5 +10,6 @@
 			validate="regauthcode"
 			size="30"
 		/>
+		<field name="groups" type="hidden" default="" />
 	</fieldset>
 </form>

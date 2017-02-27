@@ -16,8 +16,8 @@ class JFormRuleRegAuthCode extends JFormRule
 
 		$authcode = $pParams->get('authcode');
 
-		if ($value !== $authcode)
-			return false;
+	//	if ($value !== $authcode)
+	//		return false;
 
 		return true;
 	}
