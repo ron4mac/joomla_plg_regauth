@@ -18,7 +18,7 @@ class plgUserRegAuth extends JPlugin
 		$this->loadLanguage();
 		if (!isset($this->app)) $this->app = JFactory::getApplication();
 		// get all auth code and group specifications
-		for ($i=1; $i<5; $i++) {
+		for ($i=1; $i<7; $i++) {
 			$code = trim($this->params->get('authcode'.$i, ''));
 			if ($code) {
 				$this->codes[$code] = $this->params->get('groups'.$i, null);

@@ -25,7 +25,7 @@
 					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
 					multiple="true" size="10" />
 
-				<field type="spacer" name="spacer1" hr="true" />
+				<field type="spacer" hr="true" />
 
 				<field name="authcode2" type="text" size="20" default=""
 					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
@@ -33,7 +33,7 @@
 					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
 					multiple="true" size="10" />
 
-				<field type="spacer" name="spacer2" hr="true" />
+				<field type="spacer" hr="true" />
 
 				<field name="authcode3" type="text" size="20" default=""
 					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
@@ -41,11 +41,27 @@
 					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
 					multiple="true" size="10" />
 
-				<field type="spacer" name="spacer3" hr="true" />
+				<field type="spacer" hr="true" />
 
 				<field name="authcode4" type="text" size="20" default=""
 					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
 				<field name="groups4" type="usergrouplist"
+					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
+					multiple="true" size="10" />
+
+				<field type="spacer" hr="true" />
+
+				<field name="authcode5" type="text" size="20" default=""
+					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
+				<field name="groups5" type="usergrouplist"
+					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
+					multiple="true" size="10" />
+
+				<field type="spacer" hr="true" />
+
+				<field name="authcode6" type="text" size="20" default=""
+					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
+				<field name="groups6" type="usergrouplist"
 					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
 					multiple="true" size="10" />
 
