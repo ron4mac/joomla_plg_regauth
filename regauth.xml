@@ -68,4 +68,7 @@
 			</fieldset>
 		</fields>
 	</config>
+	<updateservers>
+		<server type="extension" priority="1" name="RegAuth Updates">http://rjcrans.net/jupdates/plg_regauth/updates.xml</server>
+	</updateservers>
 </extension>
