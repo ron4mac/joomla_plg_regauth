@@ -2,14 +2,15 @@
 <form>
 	<fieldset name="default" addrulepath="plugins/user/regauth/rules" label="COM_USERS_REGISTRATION_DEFAULT_LABEL">
 		<field name="authcode" type="text"
-			description="PLG_USERS_AUTHCODE"
-			filter="ALNUM"
-			label="PLG_USERS_AUTHCODE_LABEL"
-			message="PLG_USERS_AUTHCODE_MESSAGE"
+			description="PLG_USER_REGAUTH_AUTHCODE"
+			filter="STRING"
+			label="PLG_USER_REGAUTH_AUTHCODE_LABEL"
+			message="PLG_USER_REGAUTH_AUTHCODE_MESSAGE"
 			required="true"
 			validate="regauthcode"
 			size="30"
 		/>
+		<field name="sbtmck" type="hidden" default="" />
 		<field name="groups" type="hidden" default="" />
 	</fieldset>
 </form>

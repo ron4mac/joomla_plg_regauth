@@ -29,51 +29,62 @@ class plgUserRegAuth extends JPlugin
 	// here we insert an 'authorization' field into the registration form
 	public function onContentPrepareForm ($form, $data)
 	{
-		if (!($form instanceof JForm)) {
-			$this->_subject->setError('JERROR_NOT_A_FORM');
-			return false;
-		}
-
 		// Check we are manipulating the correct form.
 		$name = $form->getName();
 		if (!in_array($name, array('com_users.registration'))) {
 			return true;
 		}
 
+		// keep from using a cached time check value
+		unset($data->sbtmck);
+
 		// Add the authorization field to the form.
 		JForm::addFormPath(dirname(__FILE__).'/authform');
 		$form->loadFile('authform', false);
 
-	//	echo'<xmp>';var_dump($this->codes);debug_print_backtrace();echo'</xmp>';
+		// set a timecheck value to defeat rapid 'bot submissions
+		$shh = JFactory::getConfig()->get('secret');
+		$form->setValue('sbtmck', null, $this->encrypt(time(), $shh));
 
 		return true;
 	}
 
-	// here we check that the correct authorization value was entered
+	// here we check that the form wasn't submitted too quickly (bot?)
+	//	and that the correct authorization value was entered
 	public function onUserBeforeSave ($user, $isnew, $new)
 	{
 		if (!$isnew || $this->app->isAdmin()) return true;
 
-	//	$authCode = $this->params->get('authcode','@oH*_,G');
 		$jform = $this->app->input->post->get('jform', array(), 'array');
+
+		// check for a submission (bot?) that is too quick
+		$shh = JFactory::getConfig()->get('secret');
+		$sbtm = $this->decrypt($jform['sbtmck'], $shh);
+		if ((time() - $sbtm) < 10) {
+			throw new Exception(JText::_('PLG_USER_REGAUTH_TOOQUICK'));
+			return false;
+		}
+
+		// check for a valid authoriztion code
 		$code = trim($jform['authcode']);
 		if (!array_key_exists($code, $this->codes)) {
-			throw new Exception(JText::_('INVALID_AUTHORIZATION_CODE'));
+			throw new Exception(JText::_('PLG_USER_REGAUTH_BADAUTH'));
 			return false;
 		}
 
 		return true;
 	}
 
-	// here we set some user default settings
+	// here we can set some user default settings
 	public function onContentPrepareData ($context, $data)
 	{
 		if ($context == 'com_users.registration') {
-			$data->params = array('timezone'=>'America/New_York');
+	//		$data->params = array('timezone'=>'America/New_York');
 		}
 		return true;
 	}
 
+	// if a valid authcode has been entered, inject any configured group membership
 	public function onUserBeforeDataValidation ($form, &$data)
 	{
 		if ($form->getName() == 'com_users.registration' && !empty($data['authcode'])) {
@@ -81,8 +92,44 @@ class plgUserRegAuth extends JPlugin
 			if (array_key_exists($code, $this->codes)) {
 				if ($this->codes[$code]) $data['groups'] = $this->codes[$code];
 			}
-		//	file_put_contents('REGAUTH.LOG', print_r(array($form, $data), true), FILE_APPEND);
 		}
+	}
+
+
+	const METHOD = 'aes-128-ctr';
+
+	private function encrypt ($message, $key)
+	{
+		$nonceSize = openssl_cipher_iv_length(self::METHOD);
+		$nonce = openssl_random_pseudo_bytes($nonceSize);
+
+		$ciphertext = openssl_encrypt(
+			$message,
+			self::METHOD,
+			$key,
+			OPENSSL_RAW_DATA,
+			$nonce
+		);
+
+		return base64_encode($nonce.$ciphertext);
+	}
+
+	private function decrypt ($message, $key)
+	{
+		$message = base64_decode($message);
+		$nonceSize = openssl_cipher_iv_length(self::METHOD);
+		$nonce = mb_substr($message, 0, $nonceSize, '8bit');
+		$ciphertext = mb_substr($message, $nonceSize, null, '8bit');
+
+		$plaintext = openssl_decrypt(
+			$ciphertext,
+			self::METHOD,
+			$key,
+			OPENSSL_RAW_DATA,
+			$nonce
+		);
+
+		return $plaintext;
 	}
 
 }
