@@ -35,8 +35,12 @@ class plgUserRegAuth extends JPlugin
 			return true;
 		}
 
-		// keep from using a cached time check value
-		unset($data->sbtmck);
+		if (is_object($data)) {
+			// keep from using a cached time check value
+			unset($data->sbtmck);
+			// quiet complaint about array value for hidden field
+			$data->groups = 2;
+		}
 
 		// Add the authorization field to the form.
 		JForm::addFormPath(dirname(__FILE__).'/authform');

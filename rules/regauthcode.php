@@ -6,9 +6,11 @@
 */
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 class JFormRuleRegAuthCode extends JFormRule
 {
-	public function test (&$element, $value, $group = null, &$input = null, &$form = null)
+	public function test (SimpleXMLElement $element, $value, $group = null, Registry $input = null, JForm $form = null)
 	{
 		$plugin = JPluginHelper::getPlugin('user', 'regauth');
 		$pParams = new JRegistry();
