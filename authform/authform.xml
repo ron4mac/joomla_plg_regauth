@@ -7,7 +7,6 @@
 			label="PLG_USER_REGAUTH_AUTHCODE_LABEL"
 			message="PLG_USER_REGAUTH_AUTHCODE_MESSAGE"
 			required="true"
-			validate="regauthcode"
 			size="30"
 		/>
 		<field name="sbtmck" type="hidden" default="" />

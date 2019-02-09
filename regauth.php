@@ -1,7 +1,7 @@
 <?php
 /*
 * @package    Registration Authorization User Plugin
-* @copyright  (C) 2016 RJCreations. All rights reserved.
+* @copyright  (C) 2016-2019 RJCreations. All rights reserved.
 * @license    GNU General Public License version 3 or later; see LICENSE.txt
 */
 defined('_JEXEC') or die;
@@ -94,7 +94,7 @@ class plgUserRegAuth extends JPlugin
 		if ($form->getName() == 'com_users.registration' && !empty($data['authcode'])) {
 			$code = trim($data['authcode']);
 			if (array_key_exists($code, $this->codes)) {
-				if ($this->codes[$code]) $data['groups'] = $this->codes[$code];
+				$data['groups'] = $this->codes[$code] ?: array(2);
 			}
 		}
 	}
