@@ -5,7 +5,7 @@ Users can automatically be assigned to different groups depending on the authori
 
 Functions with standard Joomla user registration.  
 
-###Useage###
+### Useage
 Install the plugin in Joomla as is done for other extensions.  
 
 Configure the plugin by entering one or more authorization codes. Each code can optionally be configured to create a user in the selected Joomla user group(s). If no user group(s) is selected for a code, the user will be assigned to the Joomla default group.  

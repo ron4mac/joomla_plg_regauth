@@ -14,7 +14,6 @@
 		<filename>index.html</filename>
 		<folder>language</folder>
 		<folder>authform</folder>
-		<folder>rules</folder>
 	</files>
 	<updateservers>
 		<server type="extension" priority="1" name="RegAuth Updates">http://rjcrans.net/jupdates/plg_regauth/updates.php</server>
