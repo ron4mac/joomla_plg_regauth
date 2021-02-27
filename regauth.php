@@ -1,10 +1,14 @@
 <?php
 /*
 * @package    Registration Authorization User Plugin
-* @copyright  (C) 2016-2020 RJCreations. All rights reserved.
+* @copyright  (C) 2016-2021 RJCreations. All rights reserved.
 * @license    GNU General Public License version 3 or later; see LICENSE.txt
 */
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 
 class plgUserRegAuth extends JPlugin
 {
@@ -16,7 +20,7 @@ class plgUserRegAuth extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
-		if (!isset($this->app)) $this->app = JFactory::getApplication();
+		if (!isset($this->app)) $this->app = Factory::getApplication();
 		// get all auth code and group specifications
 		for ($i=1; $i<7; $i++) {
 			$code = trim($this->params->get('authcode'.$i, ''));
@@ -43,11 +47,11 @@ class plgUserRegAuth extends JPlugin
 		}
 
 		// Add the authorization field to the form.
-		JForm::addFormPath(dirname(__FILE__).'/authform');
+		Form::addFormPath(dirname(__FILE__).'/authform');
 		$form->loadFile('authform', false);
 
 		// set a timecheck value to defeat rapid 'bot submissions
-		$shh = JFactory::getConfig()->get('secret');
+		$shh = Factory::getConfig()->get('secret');
 		$form->setValue('sbtmck', null, $this->encrypt(time(), $shh));
 
 		return true;
@@ -62,17 +66,17 @@ class plgUserRegAuth extends JPlugin
 		$jform = $this->app->input->post->get('jform', [], 'array');
 
 		// check for a submission (bot?) that is too quick
-		$shh = JFactory::getConfig()->get('secret');
+		$shh = Factory::getConfig()->get('secret');
 		$sbtm = $this->decrypt($jform['sbtmck'], $shh);
 		if ((time() - $sbtm) < 10) {
-			throw new Exception(JText::_('PLG_USER_REGAUTH_TOOQUICK'));
+			throw new Exception(Text::_('PLG_USER_REGAUTH_TOOQUICK'));
 			return false;
 		}
 
 		// check for a valid authoriztion code
 		$code = trim($jform['authcode']);
 		if (!array_key_exists($code, $this->codes)) {
-			throw new Exception(JText::_('PLG_USER_REGAUTH_BADAUTH'));
+			throw new Exception(Text::_('PLG_USER_REGAUTH_BADAUTH'));
 			return false;
 		}
 
