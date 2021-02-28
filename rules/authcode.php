@@ -6,6 +6,7 @@
 */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 class JFormRuleAuthcode extends JFormRule
@@ -15,16 +16,9 @@ class JFormRuleAuthcode extends JFormRule
 		$authcode = trim($value);
 		if (!$authcode) return false;
 
-		$params = new Registry(JPluginHelper::getPlugin('user','regauth')->params);
-		$codes = [];
-		for ($i=1; $i<7; $i++) {
-			$code = trim($params->get('authcode'.$i, ''));
-			if ($code) {
-				$codes[] = $code;
-			}
-		}
+		$result = Factory::getApplication()->triggerEvent('onPlgRegAuthValidate', [$authcode]);
+		if (is_array($result)) return $result[0];
 
-		if (in_array($authcode, $codes)) return true;
 		return false;
 	}
 

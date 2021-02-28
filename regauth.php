@@ -108,6 +108,13 @@ class plgUserRegAuth extends JPlugin
 	}
 
 
+	// triggered by the registration form authcode validation rule
+	public function onPlgRegAuthValidate ($authcode)
+	{
+		return array_key_exists($authcode, $this->codes);
+	}
+
+
 	const METHOD = 'aes-128-ctr';
 
 	private function encrypt ($message, $key)
