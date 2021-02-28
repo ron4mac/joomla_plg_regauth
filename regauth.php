@@ -19,7 +19,7 @@ class plgUserRegAuth extends JPlugin
 	public function __construct (&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		$this->loadLanguage();
+
 		if (!isset($this->app)) $this->app = Factory::getApplication();
 		// get all auth code and group specifications
 		for ($i=1; $i<7; $i++) {
@@ -29,6 +29,7 @@ class plgUserRegAuth extends JPlugin
 			}
 		}
 	}
+
 
 	// here we insert an 'authorization' field into the registration form
 	public function onContentPrepareForm ($form, $data)
@@ -57,6 +58,7 @@ class plgUserRegAuth extends JPlugin
 		return true;
 	}
 
+
 	// here we check that the form wasn't submitted too quickly (bot?)
 	//	and that the correct authorization value was entered
 	public function onUserBeforeSave ($user, $isnew, $new)
@@ -83,6 +85,7 @@ class plgUserRegAuth extends JPlugin
 		return true;
 	}
 
+
 	// here we can set some user default settings
 	public function onContentPrepareData ($context, $data)
 	{
@@ -92,6 +95,7 @@ class plgUserRegAuth extends JPlugin
 		return true;
 	}
 
+
 	// if a valid authcode has been entered, inject any configured group membership
 	public function onUserBeforeDataValidation ($form, &$data)
 	{
@@ -99,7 +103,7 @@ class plgUserRegAuth extends JPlugin
 			$code = trim($data['authcode']);
 			if (array_key_exists($code, $this->codes)) {
 				$data['groups'] = $this->codes[$code] ?: [2];
-			}
+			} else $data['groups'] = [2];	// <- required to prevent failure when bad authcode
 		}
 	}
 
