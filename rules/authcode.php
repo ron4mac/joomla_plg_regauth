@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 * @package    Registration Authorization User Plugin
 * @copyright  (C) 2016-2021 RJCreations. All rights reserved.
 * @license    GNU General Public License version 3 or later; see LICENSE.txt
