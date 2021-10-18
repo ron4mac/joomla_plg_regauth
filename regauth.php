@@ -63,7 +63,7 @@ class plgUserRegAuth extends JPlugin
 	//	and that the correct authorization value was entered
 	public function onUserBeforeSave ($user, $isnew, $new)
 	{
-		if (!$isnew || $this->app->isAdmin()) return true;
+		if (!$isnew || $this->app->isClient('administrator')) return true;
 
 		$jform = $this->app->input->post->get('jform', [], 'array');
 
