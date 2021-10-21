@@ -39,7 +39,7 @@
 							label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
 						<field name="groups" type="usergrouplist"
 							label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
-							multiple="true" size="10" />
+							multiple="true" />
 					</form>
 				</field>
 
