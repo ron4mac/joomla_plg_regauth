@@ -14,6 +14,7 @@ class plgUserRegauth2InstallerScript
 	 */
 	public function install($parent) 
 	{
+		$this->convertParams();
 		return true;
 	}
 
