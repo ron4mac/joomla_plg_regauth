@@ -8,7 +8,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 
-class plgUserRegauth2InstallerScript
+class plgUserRegauthInstallerScript
 {
 	/**
 	 * Method to install the extension
