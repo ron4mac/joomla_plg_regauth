@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.0" type="plugin" group="user">
+<extension version="3.0" type="plugin" group="user" method="upgrade">
 	<name>plg_user_regauth</name>
 	<author>Ron Crans</author>
 	<creationDate>October 2021</creationDate>
 	<copyright>(C) 2012-2021 RJCreations. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<authorEmail>ron@rjconline.net</authorEmail>
-	<version>1.2.1</version>
+	<version>1.3.0</version>
 	<updater jver="[34]\.*" pver="5.6" />
 	<description>PLG_USER_REGAUTH_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 	<files>
 		<filename plugin="regauth">regauth.php</filename>
 		<filename>index.html</filename>
@@ -23,51 +24,23 @@
 		<fields name="params">
 			<fieldset name="basic">
 
-				<field name="authcode1" type="text" size="20" default="" filter="STRING"
-					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
-				<field name="groups1" type="usergrouplist"
-					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
-					multiple="true" size="10" />
-
-				<field type="spacer" hr="true" />
-
-				<field name="authcode2" type="text" size="20" default="" filter="STRING"
-					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
-				<field name="groups2" type="usergrouplist"
-					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
-					multiple="true" size="10" />
-
-				<field type="spacer" hr="true" />
-
-				<field name="authcode3" type="text" size="20" default="" filter="STRING"
-					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
-				<field name="groups3" type="usergrouplist"
-					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
-					multiple="true" size="10" />
-
-				<field type="spacer" hr="true" />
-
-				<field name="authcode4" type="text" size="20" default="" filter="STRING"
-					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
-				<field name="groups4" type="usergrouplist"
-					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
-					multiple="true" size="10" />
-
-				<field type="spacer" hr="true" />
-
-				<field name="authcode5" type="text" size="20" default="" filter="STRING"
-					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
-				<field name="groups5" type="usergrouplist"
-					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
-					multiple="true" size="10" />
-
-				<field type="spacer" hr="true" />
-
-				<field name="authcode6" type="text" size="20" default="" filter="STRING"
-					label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
-				<field name="groups6" type="usergrouplist"
-					label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
-					multiple="true" size="10" />
+				<field
+					name="authcode"
+					type="subform"
+					label="PLG_USER_REGAUTH_AUTHCODES_LABEL"
+					description="PLG_USER_REGAUTH_AUTHCODES_DESC"
+					multiple="true"
+					min="1"
+					max="10"
+					>
+					<form>
+						<field name="code" type="text" size="20" default="" filter="STRING"
+							label="PLG_USER_REGAUTH_AUTHCODE_LABEL" description="PLG_USER_REGAUTH_AUTHCODE_DESC" />
+						<field name="groups" type="usergrouplist"
+							label="PLG_USER_REGAUTH_GROUP_LABEL" description="PLG_USER_REGAUTH_GROUP_DESC"
+							multiple="true" size="10" />
+					</form>
+				</field>
 
 			</fieldset>
 		</fields>

@@ -22,11 +22,9 @@ class plgUserRegAuth extends JPlugin
 
 		if (!isset($this->app)) $this->app = Factory::getApplication();
 		// get all auth code and group specifications
-		for ($i=1; $i<7; $i++) {
-			$code = trim($this->params->get('authcode'.$i, ''));
-			if ($code) {
-				$this->codes[$code] = $this->params->get('groups'.$i, null);
-			}
+		$authcodes = $this->params->get('authcode', []);
+		foreach ($authcodes as $ac) {
+			$this->codes[$ac->code] = empty($ac->groups) ? null : $ac->groups;
 		}
 	}
 
