@@ -12,6 +12,7 @@
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<filename plugin="regauth">regauth.php</filename>
+		<filename>script.php</filename>
 		<filename>index.html</filename>
 		<folder>language</folder>
 		<folder>authform</folder>

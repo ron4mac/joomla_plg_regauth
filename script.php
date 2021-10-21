@@ -1,5 +1,9 @@
 <?php
-// No direct access to this file
+/**
+ * @package    Registration Authorization User Plugin
+ * @copyright  (C) 2016-2021 RJCreations. All rights reserved.
+ * @license    GNU General Public License version 3 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
@@ -12,7 +16,7 @@ class plgUserRegauth2InstallerScript
 	 *
 	 * @return void
 	 */
-	public function install($parent) 
+	public function install ($parent) 
 	{
 		$this->convertParams();
 		return true;
@@ -24,7 +28,7 @@ class plgUserRegauth2InstallerScript
 	 *
 	 * @return void
 	 */
-	public function uninstall($parent) 
+	public function uninstall ($parent) 
 	{
 		return true;
 	}
@@ -35,7 +39,7 @@ class plgUserRegauth2InstallerScript
 	 *
 	 * @return void
 	 */
-	public function update($parent) 
+	public function update ($parent) 
 	{
 		$this->convertParams();
 		echo '<p>The <em>regauth</em> plugin has been updated to version' . $parent->get('manifest')->version . '.</p>';
@@ -49,7 +53,7 @@ class plgUserRegauth2InstallerScript
 	 *
 	 * @return void
 	 */
-	public function preflight($type, $parent) 
+	public function preflight ($type, $parent) 
 	{
 	//	echo $type,'<p>Anything here happens before the installation/update/uninstallation of the module.</p>';
 	//	if ($type=='uninstall') return true;
@@ -65,11 +69,12 @@ class plgUserRegauth2InstallerScript
 	 *
 	 * @return void
 	 */
-	public function postflight($type, $parent) 
+	public function postflight ($type, $parent) 
 	{
 		return true;
 	}
 
+	// convert any old plugin parameters to new style
 	private function convertParams ()
 	{
 		$db = Factory::getDbo();
