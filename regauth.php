@@ -1,8 +1,9 @@
 <?php
 /**
- * @package    Registration Authorization User Plugin
- * @copyright  (C) 2016-2021 RJCreations. All rights reserved.
- * @license    GNU General Public License version 3 or later; see LICENSE.txt
+ * @package		Registration Authorization User Plugin
+ * @copyright	(C) 2016-2021 RJCreations. All rights reserved.
+ * @license		GNU General Public License version 3 or later; see LICENSE.txt
+ * @since		1.4.0
  */
 defined('_JEXEC') or die;
 
@@ -88,7 +89,10 @@ class plgUserRegAuth extends JPlugin
 	public function onContentPrepareData ($context, $data)
 	{
 		if ($context == 'com_users.registration') {
-	//		$data->params = array('timezone'=>'America/New_York');
+			if (!isset($data->regauth) && $this->params->get('usenote', 0))
+				$this->app->enqueueMessage($this->params->get('authnote', ''),'warning');
+			// flag to avoid multiple message
+			$data->regauth = 1;
 		}
 		return true;
 	}
