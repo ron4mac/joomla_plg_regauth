@@ -3,7 +3,7 @@
  * @package		Registration Authorization User Plugin
  * @copyright	(C) 2016-2023 RJCreations. All rights reserved.
  * @license		GNU General Public License version 3 or later; see LICENSE.txt
- * @since		1.4.0
+ * @since		1.4.1
  */
 defined('_JEXEC') or die;
 
@@ -43,7 +43,13 @@ class plgUserRegauthInstallerScript
 	public function update ($parent) 
 	{
 		$this->convertParams();
-		echo '<p>The <em>regauth</em> plugin has been updated to version' . $parent->get('manifest')->version . '.</p>';
+		// get the version number being installed/updated
+		if (method_exists($parent,'getManifest')) {
+			$version = $parent->getManifest()->version;
+		} else {
+			$version = $parent->get('manifest')->version;
+		}
+		echo '<p>The <em>regauth</em> plugin has been updated to version' . $version . '.</p>';
 		return true;
 	}
 

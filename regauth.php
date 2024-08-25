@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		Registration Authorization User Plugin
- * @copyright	(C) 2016-2021 RJCreations. All rights reserved.
+ * @copyright	(C) 2016-2024 RJCreations. All rights reserved.
  * @license		GNU General Public License version 3 or later; see LICENSE.txt
- * @since		1.4.0
+ * @since		1.4.1
  */
 defined('_JEXEC') or die;
 
@@ -48,7 +48,24 @@ class plgUserRegAuth extends JPlugin
 
 		// Add the authorization field to the form.
 		Form::addFormPath(dirname(__FILE__).'/authform');
-		$form->loadFile('authform', false);
+		$refer = $this->app->input->server->getRaw('HTTP_REFERER');
+file_put_contents('BUG.txt',"REFERRER $refer\n",FILE_APPEND);
+file_put_contents('BUG.txt','CONTENT-PREPARE '.print_r($data,true).print_r($form->getField('authicode'),true),FILE_APPEND);
+		$astr = $this->app->input->get('_rga', '', 'base64');
+		list($t, $authcode) = explode('||', $this->orca(base64_decode($astr)));
+if ($t < time()) {
+$this->app->enqueueMessage(Text::_('PLG_USER_REGAUTH_INVEXP'),'error');
+return false;
+}
+		
+		if ($authcode || strpos($refer,'_rga=') || ($data && isset($data->authicode))) {
+			$form->loadFile('authiform', true);
+			$form->setValue('authicode', null, $authcode);
+			$form->setValue('authcode', null, $authcode);
+		} else {
+			$form->loadFile('authform', true);
+			$form->setValue('authcode', null, '');
+		}
 
 		// set a timecheck value to defeat rapid 'bot submissions
 		$shh = Factory::getConfig()->get('secret');
@@ -89,10 +106,12 @@ class plgUserRegAuth extends JPlugin
 	public function onContentPrepareData ($context, $data)
 	{
 		if ($context == 'com_users.registration') {
+file_put_contents('BUG.txt','PREPARE-DATA '.print_r($data,true),FILE_APPEND);
 			if (!isset($data->regauth) && $this->params->get('usenote', 0))
 				$this->app->enqueueMessage($this->params->get('authnote', ''),'warning');
 			// flag to avoid multiple message
 			$data->regauth = 1;
+			$data->authcode='';
 		}
 		return true;
 	}
@@ -101,7 +120,9 @@ class plgUserRegAuth extends JPlugin
 	// if a valid authcode has been entered, inject any configured group membership
 	public function onUserBeforeDataValidation ($form, &$data)
 	{
-		if ($form->getName() == 'com_users.registration' && !empty($data['authcode'])) {
+file_put_contents('BUG.txt','BEFORE-VALIDATE '.print_r($data,true),FILE_APPEND);
+		if ($form->getName() == 'com_users.registration' && (!empty($data['authcode']) || !empty($data['authicode']))) {
+			if (!empty($data['authicode'])) $data['authcode'] = $data['authicode'];
 			$code = trim($data['authcode']);
 			if (array_key_exists($code, $this->codes)) {
 				$data['groups'] = $this->codes[$code] ?: [2];
@@ -136,5 +157,18 @@ class plgUserRegAuth extends JPlugin
 		$plaintext = openssl_decrypt($ciphertext, self::METHOD, $key, OPENSSL_RAW_DATA, $nonce);
 		return $plaintext;
 	}
+
+	private function orca ($p)
+	{
+		$q = Factory::getConfig()->get('secret');
+		$l = strlen($q);
+		$r = '';
+		while ($p) {
+			$r .= substr($p, 0, $l) ^ substr($q, 0, strlen($p));
+			$p = substr($p, $l);
+		}
+		return $r;
+	}
+
 
 }
