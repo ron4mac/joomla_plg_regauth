@@ -1,45 +1,30 @@
 <?php
 /**
- * @package		Registration Authorization User Plugin
- * @copyright	(C) 2016-2023 RJCreations. All rights reserved.
- * @license		GNU General Public License version 3 or later; see LICENSE.txt
- * @since		1.4.1
- */
+* @package		plg_user_regauth
+* @copyright	Copyright (C) 2022-2024 RJCreations. All rights reserved.
+* @license		GNU General Public License version 3 or later; see LICENSE.txt
+* @since		1.5.0
+*/
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 
 class plgUserRegauthInstallerScript
 {
-	/**
-	 * Method to install the extension
-	 * $parent is the class calling this method
-	 *
-	 * @return void
-	 */
+	protected $minimumJoomla = '4.0';
+	protected $deleteFiles = ['/plugins/user/regauth/regauth.php'];
+
 	public function install ($parent) 
 	{
 		$this->convertParams();
 		return true;
 	}
 
-	/**
-	 * Method to uninstall the extension
-	 * $parent is the class calling this method
-	 *
-	 * @return void
-	 */
 	public function uninstall ($parent) 
 	{
 		return true;
 	}
 
-	/**
-	 * Method to update the extension
-	 * $parent is the class calling this method
-	 *
-	 * @return void
-	 */
 	public function update ($parent) 
 	{
 		$this->convertParams();
@@ -53,31 +38,16 @@ class plgUserRegauthInstallerScript
 		return true;
 	}
 
-	/**
-	 * Method to run before an install/update/uninstall method
-	 * $parent is the class calling this method
-	 * $type is the type of change (install, update or discover_install)
-	 *
-	 * @return void
-	 */
 	public function preflight ($type, $parent) 
 	{
-	//	echo $type,'<p>Anything here happens before the installation/update/uninstallation of the module.</p>';
-	//	if ($type=='uninstall') return true;
-	//	$this->convertParams();
-	//	return false;
 		return true;
 	}
 
-	/**
-	 * Method to run after an install/update/uninstall method
-	 * $parent is the class calling this method
-	 * $type is the type of change (install, update or discover_install)
-	 *
-	 * @return void
-	 */
 	public function postflight ($type, $parent) 
 	{
+		if ($type === 'update') {
+			$this->removeFiles();
+		}
 		return true;
 	}
 

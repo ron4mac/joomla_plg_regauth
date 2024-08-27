@@ -1,16 +1,17 @@
 <?php
 /**
-* @package		Registration Authorization User Plugin
-* @copyright	(C) 2016-2023 RJCreations. All rights reserved.
+* @package		plg_user_regauth
+* @copyright	Copyright (C) 2022-2024 RJCreations. All rights reserved.
 * @license		GNU General Public License version 3 or later; see LICENSE.txt
-* @since		1.4.0
+* @since		1.5.0
 */
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Form\FormRule;
 
-class JFormRuleAuthcode extends JFormRule
+class JFormRuleAuthcode extends FormRule
 {
 	public function test(SimpleXMLElement $element, $value, $group = null, Registry $input = null, JForm $form = null)
 	{

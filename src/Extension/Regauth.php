@@ -1,17 +1,20 @@
 <?php
 /**
- * @package		Registration Authorization User Plugin
- * @copyright	(C) 2016-2024 RJCreations. All rights reserved.
- * @license		GNU General Public License version 3 or later; see LICENSE.txt
- * @since		1.4.1
- */
+* @package		plg_user_regauth
+* @copyright	Copyright (C) 2022-2024 RJCreations. All rights reserved.
+* @license		GNU General Public License version 3 or later; see LICENSE.txt
+* @since		1.5.0
+*/
+namespace RJCreations\Plugin\User\Regauth\Extension;
+
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
 
-class plgUserRegAuth extends JPlugin
+class Regauth extends CMSPlugin
 {
 	protected $autoloadLanguage = true;
 	protected $app;
@@ -46,18 +49,27 @@ class plgUserRegAuth extends JPlugin
 			$data->groups = 2;
 		}
 
-		// Add the authorization field to the form.
-		Form::addFormPath(dirname(__FILE__).'/authform');
 		$refer = $this->app->input->server->getRaw('HTTP_REFERER');
-file_put_contents('BUG.txt',"REFERRER $refer\n",FILE_APPEND);
-file_put_contents('BUG.txt','CONTENT-PREPARE '.print_r($data,true).print_r($form->getField('authicode'),true),FILE_APPEND);
 		$astr = $this->app->input->get('_rga', '', 'base64');
-		list($t, $authcode) = explode('||', $this->orca(base64_decode($astr)));
-if ($t < time()) {
-$this->app->enqueueMessage(Text::_('PLG_USER_REGAUTH_INVEXP'),'error');
-return false;
-}
-		
+		if (($refer && strpos($refer,'registration')===false) && !$astr) $this->app->enqueueMessage($this->params->get('authnote', ''),'warning');
+
+		if ($astr) {
+			list($t, $authcode) = array_pad(explode('||', $this->orca(base64_decode($astr))),2,'');
+			if (!$authcode) {
+				$this->app->enqueueMessage(Text::_('PLG_USER_REGAUTH_INVINV'),'error');
+				return false;
+			}
+			if ($t < time()) {
+				$this->app->enqueueMessage(Text::_('PLG_USER_REGAUTH_INVEXP'),'error');
+				return false;
+			}
+		} else {
+			$authcode = false;
+		}
+
+		// Add the authorization field to the form.
+		Form::addFormPath(dirname(dirname(dirname(__FILE__))).'/authform');
+
 		if ($authcode || strpos($refer,'_rga=') || ($data && isset($data->authicode))) {
 			$form->loadFile('authiform', true);
 			$form->setValue('authicode', null, $authcode);
@@ -87,14 +99,14 @@ return false;
 		$shh = Factory::getConfig()->get('secret');
 		$sbtm = $this->decrypt($jform['sbtmck'], $shh);
 		if ((time() - $sbtm) < 10) {
-			throw new Exception(Text::_('PLG_USER_REGAUTH_TOOQUICK'));
+			throw new \Exception(Text::_('PLG_USER_REGAUTH_TOOQUICK'));
 			return false;
 		}
 
 		// check for a valid authoriztion code
 		$code = trim($jform['authcode']);
 		if (!array_key_exists($code, $this->codes)) {
-			throw new Exception(Text::_('PLG_USER_REGAUTH_BADAUTH'));
+			throw new \Exception(Text::_('PLG_USER_REGAUTH_BADAUTH')." -- $code");
 			return false;
 		}
 
@@ -106,12 +118,9 @@ return false;
 	public function onContentPrepareData ($context, $data)
 	{
 		if ($context == 'com_users.registration') {
-file_put_contents('BUG.txt','PREPARE-DATA '.print_r($data,true),FILE_APPEND);
-			if (!isset($data->regauth) && $this->params->get('usenote', 0))
-				$this->app->enqueueMessage($this->params->get('authnote', ''),'warning');
 			// flag to avoid multiple message
 			$data->regauth = 1;
-			$data->authcode='';
+		//	$data->authcode='';
 		}
 		return true;
 	}
@@ -120,7 +129,6 @@ file_put_contents('BUG.txt','PREPARE-DATA '.print_r($data,true),FILE_APPEND);
 	// if a valid authcode has been entered, inject any configured group membership
 	public function onUserBeforeDataValidation ($form, &$data)
 	{
-file_put_contents('BUG.txt','BEFORE-VALIDATE '.print_r($data,true),FILE_APPEND);
 		if ($form->getName() == 'com_users.registration' && (!empty($data['authcode']) || !empty($data['authicode']))) {
 			if (!empty($data['authicode'])) $data['authcode'] = $data['authicode'];
 			$code = trim($data['authcode']);
