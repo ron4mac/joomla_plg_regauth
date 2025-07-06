@@ -2,11 +2,11 @@
 <extension type="plugin" group="user" method="upgrade">
 	<name>plg_user_regauth</name>
 	<author>Ron Crans</author>
-	<creationDate>August 2024</creationDate>
-	<copyright>(C) 2012-2024 RJCreations. All rights reserved.</copyright>
+	<creationDate>July 2025</creationDate>
+	<copyright>(C) 2012-2025 RJCreations. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<authorEmail>ron@rjconline.net</authorEmail>
-	<version>1.5.0</version>
+	<version>1.5.2</version>
 	<updater jver="((4\.[1-8])||(5\.[0-3]))" pver="7.2" />
 	<description>PLG_USER_REGAUTH_XML_DESCRIPTION</description>
 	<namespace path="src">RJCreations\Plugin\User\Regauth</namespace>

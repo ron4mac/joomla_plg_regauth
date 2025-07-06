@@ -11,6 +11,7 @@
 			validate="authcode"
 			size="30"
 		/>
+		<field name="invite" type="hidden" default="" />
 		<field name="sbtmck" type="hidden" default="" />
 		<field name="groups" type="hidden" default="" />
 	</fieldset>
