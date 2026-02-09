@@ -1,9 +1,9 @@
 <?php
 /**
 * @package		plg_user_regauth
-* @copyright	Copyright (C) 2022-2025 RJCreations. All rights reserved.
+* @copyright	Copyright (C) 2022-2026 RJCreations. All rights reserved.
 * @license		GNU General Public License version 3 or later; see LICENSE.txt
-* @since		1.5.2
+* @since		1.5.4
 */
 namespace RJCreations\Plugin\User\Regauth\Extension;
 
@@ -37,7 +37,7 @@ final class Regauth extends CMSPlugin
 
 
 	// here we insert an 'authorization' field into the registration form
-	public function onContentPrepareForm ($form, $data)
+	public function onContentPrepareForm ($form, $data=null)
 	{
 		// Check we are manipulating the correct form.
 		$name = $form->getName();
@@ -58,8 +58,8 @@ final class Regauth extends CMSPlugin
 		}
 
 		$refer = $this->app->input->server->getRaw('HTTP_REFERER');
-		if (!isset($astr)) $astr = $this->app->input->get('_rga', '', 'base64');
-		$rsvp = (bool)$astr;
+		if (empty($astr)) $astr = $this->app->input->get('_rga', '', 'base64');
+		$rsvp = $astr!=='';
 		$authcode = '';
 		// see if there is a valid invitation
 		if ($rsvp) $rsvp = $this->validInvite($astr,$authcode);
@@ -108,7 +108,7 @@ final class Regauth extends CMSPlugin
 		}
 
 		// if through invitation, record the invitation useage
-		if (isset($jform['invite'])) {
+		if (!empty($jform['invite'])) {
 			$this->storeInvite($jform['invite']);
 		}
 

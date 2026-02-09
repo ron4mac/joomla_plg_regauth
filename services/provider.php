@@ -1,9 +1,9 @@
 <?php
 /**
 * @package		plg_user_regauth
-* @copyright	Copyright (C) 2022-2024 RJCreations. All rights reserved.
+* @copyright	Copyright (C) 2022-2026 RJCreations. All rights reserved.
 * @license		GNU General Public License version 3 or later; see LICENSE.txt
-* @since		1.5.0
+* @since		1.5.4
 */
 \defined('_JEXEC') or die;
 
@@ -21,7 +21,7 @@ return new class () implements ServiceProviderInterface {
         $container->set(
             PluginInterface::class,
             function (Container $container) {
-            	$disptchr = $container->get('Joomla\Event\DispatcherInterface');
+            	$disptchr = $container->get(DispatcherInterface::class);
                 $plugin = new Regauth(
                 	$disptchr,
                     (array) PluginHelper::getPlugin('user', 'regauth')
